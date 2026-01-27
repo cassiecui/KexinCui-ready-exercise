@@ -63,7 +63,7 @@ _It is recommended to use a structured abstract with Background/Methods/Results/
 _Provide enough background on your topic that others can understand the why and how of your analysis_ 
 
 ## Description of data and data source
-_Describe what the data is, what it contains, where it is from, etc. Eventually this might be part of a methods section._
+The dataset contains individual-level measurements of height, weight, and gender. To extend the original data, two additional variables were added. DailySteps is a numeric variable representing an individual’s average daily step count, and HairColor is a categorical variable describing self-reported hair color (e.g., Black, Brown, Blonde, Red). Descriptions of all variables, including the newly added ones, are provided in the Codebook sheet of the Excel file.
 
 ## Questions/Hypotheses to be addressed
 _State the research questions you plan to answer with this analysis._
