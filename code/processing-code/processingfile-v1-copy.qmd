@@ -102,6 +102,12 @@ d3$Gender <- as.factor(d3$Gender)
 skimr::skim(d3)
 ```
 
+```{r}
+d3$HairColor <- as.factor(d3$HairColor)  
+skimr::skim(d3)
+```
+
+
 
 Now we see that there is another NA, but it's not `NA` from R, instead it was loaded as character and is now considered as a category.
 We'll proceed here by removing that individual with that NA entry. Since this keeps an empty category for Gender, I'm also using droplevels() to get rid of it.
