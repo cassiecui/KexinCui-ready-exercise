@@ -1,6 +1,6 @@
 ---
 title: "Example Report Template for a Data Analysis Project"
-author: ""
+author: "Kexin Cui & Rebecca Basta"
 format:
   html:
     embed-resources: true 
@@ -27,50 +27,17 @@ library(knitr)
 ```
 
 
-**Authors**  
-
-* First Author$^{1,2,*}$ (ORCID: 0000-0000-1234-5678) 
-* Second Author$^{3, *}$
-* Third Author$^{3, \dagger}$
-* Last Author$^{1, 2, \land}$ 
-
-**Author affiliations**  
-
-1. College of Public Health, University of Georgia, Athens, GA, USA.
-2. Another Affiliation, Athens, GA, USA.
-3. Yet another Affiliation.
-
-$*$ These authors contributed equally to this work.
-
-$\land$ Corresponding author: some@email.com
-
-$\dagger$ Disclaimer: The opinions expressed in this article are the
-author's own and don't reflect their employer.
-
 
 
 
 # Summary/Abstract
-_Write a summary of your project._
-
-_It is recommended to use a structured abstract with Background/Methods/Results/Discussion sections._
-
-
+This report demonstrates a simple, reproducible data analysis workflow, including data cleaning, exploratory analysis, and basic linear regression modeling. Newly added variables were incorporated to illustrate how extended data can be analyzed and reported within the READy framework.
 
 # Introduction 
 
-## General Background Information
-_Provide enough background on your topic that others can understand the why and how of your analysis_ 
 
 ## Description of data and data source
 The dataset contains individual-level measurements of height, weight, and gender. To extend the original data, two additional variables were added. DailySteps is a numeric variable representing an individual’s average daily step count, and HairColor is a categorical variable describing self-reported hair color (e.g., Black, Brown, Blonde, Red). Descriptions of all variables, including the newly added ones, are provided in the Codebook sheet of the Excel file.
-
-## Questions/Hypotheses to be addressed
-_State the research questions you plan to answer with this analysis._
-
-To cite other work (important everywhere, but likely happens first in introduction), make sure your references are in the BibTeX file specified in the YAML header above and have the right BibTeX key. Then you can include like this:
-
-Examples of reproducible research projects can for instance be found in [@mckay2020; @mckay2020a].
 
 
 
@@ -80,45 +47,25 @@ Examples of reproducible research projects can for instance be found in [@mckay2
 _Describe your methods. That should describe the data, the cleaning processes, and the analysis approaches. You might want to provide a shorter description here and all the details in the supplement._
 
 
-## Schematic of workflow
-
-Sometimes you might want to show a schematic diagram/figure that was not created with code (if you can do it with code, do it). @fig-schematic is an example of some - completely random/unrelated - schematic that was generated with BioRender.
-We store those figures in the `assets` folder.
-
-```{r}
-#| label: fig-schematic
-#| fig-cap: "A figure that is manually generated and shows some overview/schematic. This has nothing to do with the data, it's just a random one from one of our projects I found and placed here."
-#| echo: FALSE
-knitr::include_graphics(here("assets","antigen-recognition.png"))
-```
-
-
 
 
 ## Data acquisition
-_As applicable, explain where and how you got the data. If you directly import the data from an online source, you can combine this section with the next._
+The data used in this analysis were provided as an Excel file containing individual-level measurements of height, weight, and gender. Two additional variables were added for this exercise: a numerical variable representing average daily step count and a categorical variable representing hair color. All variables and their definitions are documented in the Codebook sheet of the Excel file.
 
 
 ## Data import and cleaning
-_Write code that reads in the file and cleans it so it's ready for analysis. Since this will be fairly long code for most datasets, it might be a good idea to have it in one or several R scripts. If that is the case, explain here briefly what kind of cleaning/processing you do, and provide more details and well documented code somewhere (e.g. as supplement in a paper). All materials, including files that contain code, should be commented well so everyone can follow along._
-
+Data cleaning steps included removing or correcting implausible values (such as non-numeric height entries and impossible weight values), excluding observations with missing key variables, and converting categorical variables to factors. These steps were performed in a dedicated processing script to ensure reproducibility. The cleaned dataset was saved as an RDS file in the data/processed-data directory for downstream analysis.
 
 ## Statistical analysis
-_Explain anything related to your statistical analyses._
-
-
+Exploratory analyses were conducted using summary tables and visualizations, including histograms, boxplots, and scatterplots, to examine distributions and relationships among variables. For inferential analysis, simple linear regression models were fitted with height as the outcome variable. Models included height as a function of weight alone, height as a function of weight and gender, and height as a function of the newly added predictors. Model results were summarized into tidy tables and saved to the results/tables directory for inclusion in the report.
 
 
 # Results
 
 ## Exploratory/Descriptive analysis
 
-_Use a combination of text/tables/figures to explore and describe your data. Show the most important descriptive results here. Additional ones should go in the supplement. Even more can be in the R and Quarto files that are part of your project._
+We first summarized the cleaned dataset using a descriptive summary table (@tbl-summarytable shows a summary of the data.). We also generated exploratory figures to visualize key distributions and relationships, including two figures that incorporate the newly added variables: a boxplot of height stratified by hair color (@fig-height-by-haircolor) and a scatterplot of daily steps as a function of weight (@fig-daily-steps-vs-weight).
 
-
-@tbl-summarytable shows a summary of the data.
-
-Note the loading of the data providing a **relative** path using the `../../` notation. (Two dots means a folder up). You never want to specify an **absolute** path like `C:\yourname\yourproject\results\` because if you share this with someone, it won't work for them since they don't have that path. You can also use the `here` R package to create paths. See examples of that below. I generally recommend the `here` package.
 
 ```{r}
 #| label: tbl-summarytable
@@ -128,14 +75,24 @@ resulttable <- readRDS("../../results/tables/summarytable.rds")
 knitr::kable(resulttable)
 ```
 
+```{r}
+#| label: fig-height-by-haircolor
+#| fig-cap: "Boxplot of height stratified by hair color."
+#| echo: FALSE
+knitr::include_graphics(here("results","figures","height-by-haircolor.png"))
+```
 
+```{r}
+#| label: fig-daily-steps-vs-weight
+#| fig-cap: "Scatterplot of daily steps as a function of weight."
+#| echo: FALSE
+knitr::include_graphics(here("results","figures","daily-steps-vs-weight.png"))
+```
 
 ## Basic statistical analysis
 
-_To get some further insight into your data, if reasonable you could compute simple statistics (e.g. simple models with 1 predictor) to look for associations between your outcome(s) and each individual predictor variable. Though note that unless you pre-specified the outcome and main exposure, any "p<0.05 means statistical significance" interpretation is not valid._
-
-
-@fig-result shows a scatterplot figure produced by one of the R scripts.
+To explore simple associations, we fitted linear regression models with height as the outcome variable. We began with a model including weight as a predictor and then a model including both weight and gender. 
+@fig-result shows a scatterplot figure produced by one of the R scripts. Model results are summarized in @tbl-resulttable1 and @tbl-resulttable2.
 
 ```{r}
 #| label: fig-result
@@ -144,43 +101,45 @@ _To get some further insight into your data, if reasonable you could compute sim
 knitr::include_graphics(here("results","figures","height-weight-stratified.png"))
 ```
 
-
-## Full analysis
-
-_Use one or several suitable statistical/machine learning methods to analyze your data and to produce meaningful figures, tables, etc. This might again be code that is best placed in one or several separate R scripts that need to be well documented. You want the code to produce figures and data ready for display as tables, and save those. Then you load them here._
-
-Example @tbl-resulttable2 shows a summary of a linear model fit.
+```{r}
+#| label: tbl-resulttable1
+#| tbl-cap: "Linear regression results with height as the outcome and weight as the predictor."
+#| echo: FALSE
+resulttable1 <- readRDS(here("results","tables","resulttable1.rds"))
+knitr::kable(resulttable1)
+```
 
 ```{r}
 #| label: tbl-resulttable2
-#| tbl-cap: "Linear model fit table."
+#| tbl-cap: "Linear regression results with height as the outcome and weight and gender as predictors."
 #| echo: FALSE
 resulttable2 <- readRDS(here("results","tables","resulttable2.rds"))
 knitr::kable(resulttable2)
 ```
 
+## Full analysis
+Finally, a third linear regression model was fitted using the newly added variables—daily steps and hair color—as predictors of height. The results of this model are shown in @tbl-resulttable3.
+
+```{r}
+#| label: tbl-resulttable3
+#| tbl-cap: "Linear regression results with height as the outcome and daily steps and hair color as predictors."
+#| echo: FALSE
+resulttable3 <- readRDS(here("results","tables","resulttable3.rds"))
+knitr::kable(resulttable3)
+```
 
 
 
 # Discussion
 
 ## Summary and Interpretation
-_Summarize what you did, what you found and what it means._
+This analysis explored relationships between height and several predictors using exploratory visualizations and simple linear regression models. Basic models examined associations with weight and gender, while a final model incorporated newly added variables. Together, these results illustrate how additional information can be integrated into a reproducible analysis workflow.
 
 ## Strengths and Limitations
-_Discuss what you perceive as strengths and limitations of your analysis._
+A strength of this analysis is the use of a fully scripted and reproducible workflow. Limitations include the small sample size and the exploratory nature of the analysis, which limits formal inference.
 
 ## Conclusions
-_What are the main take-home messages?_
-
-_Include citations in your Qmd file using BibTeX, the list of references will automatically be placed at the end_
-
-This paper [@leek2015] discusses types of analyses. 
-
-These papers [@mckay2020; @mckay2020a] are good examples of papers published using a fully reproducible setup similar to the one shown in this template. 
-
-Note that this cited reference will show up at the end of the document, the reference formatting is determined by the CSL file specified in the YAML header. Many more style files for almost any journal [are available](https://www.zotero.org/styles). You also specify the location of your BibTeX reference file in the YAML. You can call your reference file anything you like.
-
+This exercise demonstrates a simple end-to-end data analysis using the READy workflow, from data cleaning to exploratory analysis, modeling, and reporting.
 
 
 # References
